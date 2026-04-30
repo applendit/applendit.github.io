@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,7 +30,6 @@
             overflow-x: hidden;
         }
 
-        /* Animated Space Background */
         .stars-container {
             position: fixed;
             top: 0;
@@ -73,7 +72,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
-            letter-spacing: -1px;
         }
 
         .subtitle {
@@ -84,38 +82,19 @@
         .card {
             background: var(--glass-white);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
             padding: 40px;
             margin-bottom: 30px;
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            border-color: rgba(59, 130, 246, 0.3);
         }
 
         h2 {
             font-size: 1.8rem;
-            color: #fff;
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        h2::before {
-            content: '';
-            width: 4px;
-            height: 24px;
-            background: var(--star-blue);
-            border-radius: 2px;
         }
 
         p, li {
             color: var(--text-gray);
             margin-bottom: 15px;
-            font-size: 1.05rem;
         }
 
         ul {
@@ -129,49 +108,10 @@
             margin-right: 10px;
         }
 
-        .deletion-box {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            border-radius: 16px;
-            padding: 25px;
-            margin-top: 30px;
-        }
-
-        .deletion-box h3 {
-            color: #ef4444;
-            margin-bottom: 10px;
-        }
-
-        .btn {
-            display: inline-block;
-            background: var(--star-blue);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .btn:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: #4b5563;
-            font-size: 0.9rem;
-        }
-
         .language-switcher {
             position: fixed;
             top: 20px;
             right: 20px;
-            z-index: 100;
             display: flex;
             gap: 10px;
         }
@@ -183,201 +123,113 @@
             padding: 8px 16px;
             border-radius: 10px;
             cursor: pointer;
-            backdrop-filter: blur(5px);
         }
 
         .lang-btn.active {
             background: var(--star-blue);
-            border-color: var(--star-blue);
         }
 
-        [lang="en"] { display: none; }
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #4b5563;
+        }
     </style>
 </head>
 <body>
 
-    <div class="stars-container" id="stars"></div>
+<div class="stars-container" id="stars"></div>
 
-    <div class="language-switcher">
-        <button class="lang-btn" onclick="switchLang('tr')">TR</button>
-        <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+<div class="language-switcher">
+    <button class="lang-btn" id="btn-tr" onclick="switchLang('tr')">TR</button>
+    <button class="lang-btn" id="btn-en" onclick="switchLang('en')">EN</button>
+</div>
+
+<div class="container">
+    <header>
+        <div class="logo">WORDIVA</div>
+        <p class="subtitle" id="last-update"></p>
+    </header>
+
+    <div id="tr-content">
+        <section class="card">
+            <h2>Giriş</h2>
+            <p>Wordiva olarak gizliliğinize önem veriyoruz.</p>
+        </section>
     </div>
 
-    <div class="container">
-        <header>
-            <div class="logo">WORDIVA</div>
-            <p class="subtitle" id="last-update">Son Güncelleme: 28 Nisan 2026</p>
-        </header>
-
-        <!-- TURKISH CONTENT -->
-        <div id="tr-content">
-            <section class="card">
-                <h2>Giriş</h2>
-                <p>Wordiva ("biz", "bize" veya "bizim") olarak gizliliğinize önem veriyoruz. Bu Gizlilik Politikası, Wordiva mobil uygulamasını kullandığınızda bilgilerinizin nasıl toplandığını, kullanıldığını ve paylaşıldığını açıklar.</p>
-            </section>
-
-            <section class="card">
-                <h2>Toplanan Veriler</h2>
-                <p>Uygulamamızı kullanırken aşağıdaki veriler toplanabilir:</p>
-                <ul>
-                    <li><strong>Hesap Bilgileri:</strong> Google Sign-In ile giriş yaparsanız; adınız, e-posta adresiniz ve profil resminiz.</li>
-                    <li><strong>Oyun İlerlemesi:</strong> Seviyeler, kazanılan puanlar ve oyun içi başarımlar (Firebase Firestore üzerinde saklanır).</li>
-                    <li><strong>Cihaz Bilgileri:</strong> Reklam kimliği (GAID), cihaz modeli ve işletim sistemi versiyonu.</li>
-                    <li><strong>Kullanım Verileri:</strong> Uygulama içi etkileşimler ve hata raporları (Firebase Crashlytics & Analytics).</li>
-                </ul>
-            </section>
-
-            <section class="card">
-                <h2>Verilerin Kullanım Amacı</h2>
-                <p>Verileriniz şu amaçlarla kullanılır:</p>
-                <ul>
-                    <li>Oyun ilerlemenizi cihazlar arasında senkronize etmek.</li>
-                    <li>Çok oyunculu (Multiplayer) modda diğer oyuncularla eşleşmenizi sağlamak.</li>
-                    <li>AdMob aracılığıyla size uygun reklamlar sunmak.</li>
-                    <li>Uygulama performansını artırmak ve hataları gidermek.</li>
-                </ul>
-            </section>
-
-            <section class="card">
-                <h2>Üçüncü Taraf Servisler</h2>
-                <p>Wordiva, aşağıdaki güvenilir servis sağlayıcılarını kullanır:</p>
-                <ul>
-                    <li>Google Play Services</li>
-                    <li>Firebase (Auth, Firestore, Analytics, Crashlytics)</li>
-                    <li>AdMob (Google Mobile Ads)</li>
-                </ul>
-            </section>
-
-            <section class="card">
-                <h2>Veri Silme ve Kullanıcı Hakları</h2>
-                <p>Verileriniz üzerinde tam kontrole sahipsiniz. Hesabınızı ve tüm verilerinizi istediğiniz zaman silebilirsiniz.</p>
-                <div class="deletion-box">
-                    <h3>Hesap ve Veri Silme Talebi</h3>
-                    <p>Verilerinizi silmek için iki yönteminiz vardır:</p>
-                    <ol style="color: var(--text-gray); margin-left: 20px; margin-bottom: 15px;">
-                        <li><strong>Uygulama İçi:</strong> Ayarlar > Hesabı Sil yolunu izleyerek tüm verilerinizi anında silebilirsiniz.</li>
-                        <li><strong>E-posta yoluyla:</strong> Aşağıdaki adresi kullanarak silme talebi iletebilirsiniz.</li>
-                    </ol>
-                    <a href="mailto:applendit@gmail.com?subject=Wordiva Veri Silme Talebi" class="btn">applendit@gmail.com</a>
-                </div>
-            </section>
-
-            <section class="card">
-                <h2>Çocukların Gizliliği</h2>
-                <p>Wordiva, 13 yaşın altındaki çocuklardan bilerek kişisel veri toplamaz. Eğer bir çocuğun bize veri sağladığını fark ederseniz, lütfen bizimle iletişime geçin; bu verileri derhal sunucularımızdan sileceğiz.</p>
-            </section>
-
-            <section class="card">
-                <h2>İletişim</h2>
-                <p>Gizlilik politikamız hakkında sorularınız için bize ulaşın:</p>
-                <p>E-posta: <strong>applendit@gmail.com</strong></p>
-            </section>
-        </div>
-
-        <!-- ENGLISH CONTENT -->
-        <div id="en-content" style="display: none;">
-            <section class="card">
-                <h2>Introduction</h2>
-                <p>At Wordiva ("we", "us", or "our"), we value your privacy. This Privacy Policy explains how your information is collected, used, and shared when you use the Wordiva mobile application.</p>
-            </section>
-
-            <section class="card">
-                <h2>Data We Collect</h2>
-                <p>The following data may be collected while using our app:</p>
-                <ul>
-                    <li><strong>Account Information:</strong> If you sign in via Google; your name, email address, and profile picture.</li>
-                    <li><strong>Game Progress:</strong> Levels, scores, and in-game achievements (stored on Firebase Firestore).</li>
-                    <li><strong>Device Information:</strong> Advertising ID (GAID), device model, and OS version.</li>
-                    <li><strong>Usage Data:</strong> In-app interactions and crash reports (Firebase Crashlytics & Analytics).</li>
-                </ul>
-            </section>
-
-            <section class="card">
-                <h2>Purpose of Data Usage</h2>
-                <p>Your data is used for the following purposes:</p>
-                <ul>
-                    <li>Syncing your game progress across devices.</li>
-                    <li>Enabling matchmaking with other players in Multiplayer mode.</li>
-                    <li>Providing relevant ads via AdMob.</li>
-                    <li>Improving app performance and fixing bugs.</li>
-                </ul>
-            </section>
-
-            <section class="card">
-                <h2>Third-Party Services</h2>
-                <p>Wordiva uses the following trusted service providers:</p>
-                <ul>
-                    <li>Google Play Services</li>
-                    <li>Firebase (Auth, Firestore, Analytics, Crashlytics)</li>
-                    <li>AdMob (Google Mobile Ads)</li>
-                </ul>
-            </section>
-
-            <section class="card">
-                <h2>Data Deletion & User Rights</h2>
-                <p>You have full control over your data. You can delete your account and all associated data at any time.</p>
-                <div class="deletion-box">
-                    <h3>Account and Data Deletion Request</h3>
-                    <p>You have two ways to delete your data:</p>
-                    <ol style="color: var(--text-gray); margin-left: 20px; margin-bottom: 15px;">
-                        <li><strong>In-App:</strong> Go to Settings > Delete Account to wipe all your data instantly.</li>
-                        <li><strong>Via Mail:</strong> Send a deletion request using the address below.</li>
-                    </ol>
-                    <a href="mailto:applendit@gmail.com?subject=Wordiva Data Deletion Request" class="btn">applendit@gmail.com</a>
-                </div>
-            </section>
-
-            <section class="card">
-                <h2>Children's Privacy</h2>
-                <p>Wordiva does not knowingly collect personal data from children under 13. If you become aware that a child has provided us with data, please contact us; we will delete such data from our servers immediately.</p>
-            </section>
-
-            <section class="card">
-                <h2>Contact Us</h2>
-                <p>For questions about our privacy policy, contact us at:</p>
-                <p>Email: <strong>applendit@gmail.com</strong></p>
-            </section>
-        </div>
-
-        <footer>
-            <p>&copy; 2026 Wordiva. All rights reserved.</p>
-        </footer>
+    <div id="en-content">
+        <section class="card">
+            <h2>Introduction</h2>
+            <p>At Wordiva, we value your privacy.</p>
+        </section>
     </div>
 
-    <script>
-        // Create random stars
-        const starsContainer = document.getElementById('stars');
-        const starCount = 150;
+    <footer>
+        <p>&copy; 2026 Wordiva</p>
+    </footer>
+</div>
 
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            const size = Math.random() * 3;
-            star.style.width = size + 'px';
-            star.style.height = size + 'px';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
-            starsContainer.appendChild(star);
+<script>
+    function setLastUpdate(lang) {
+        const el = document.getElementById('last-update');
+        if (lang === 'tr') {
+            el.textContent = "Son Güncelleme: 28 Nisan 2026";
+        } else {
+            el.textContent = "Last Updated: April 28, 2026";
+        }
+    }
+
+    function switchLang(lang) {
+        const tr = document.getElementById('tr-content');
+        const en = document.getElementById('en-content');
+
+        const btnTR = document.getElementById('btn-tr');
+        const btnEN = document.getElementById('btn-en');
+
+        if (lang === 'tr') {
+            tr.style.display = 'block';
+            en.style.display = 'none';
+            btnTR.classList.add('active');
+            btnEN.classList.remove('active');
+        } else {
+            tr.style.display = 'none';
+            en.style.display = 'block';
+            btnTR.classList.remove('active');
+            btnEN.classList.add('active');
         }
 
-        function switchLang(lang) {
-            const trContent = document.getElementById('tr-content');
-            const enContent = document.getElementById('en-content');
-            const btns = document.querySelectorAll('.lang-btn');
+        localStorage.setItem('lang', lang);
+        setLastUpdate(lang);
+    }
 
-            if (lang === 'tr') {
-                trContent.style.display = 'block';
-                enContent.style.display = 'none';
-                btns[0].classList.add('active');
-                btns[1].classList.remove('active');
-            } else {
-                trContent.style.display = 'none';
-                enContent.style.display = 'block';
-                btns[0].classList.remove('active');
-                btns[1].classList.add('active');
-            }
+    function initLang() {
+        const saved = localStorage.getItem('lang');
+
+        if (saved) {
+            switchLang(saved);
+        } else {
+            const browserLang = navigator.language.startsWith('tr') ? 'tr' : 'en';
+            switchLang(browserLang);
         }
-    </script>
+    }
+
+    // stars
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 120; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        const size = Math.random() * 3;
+        s.style.width = size + 'px';
+        s.style.height = size + 'px';
+        s.style.left = Math.random() * 100 + '%';
+        s.style.top = Math.random() * 100 + '%';
+        s.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+        starsContainer.appendChild(s);
+    }
+
+    initLang();
+</script>
+
 </body>
 </html>
