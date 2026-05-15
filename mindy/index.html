@@ -1,1 +1,1308 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mindy Loops — Breathe. Connect. Flow.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e0d;
+    --bg2: #0f1512;
+    --tile: #b8c4be;
+    --accent: #7ecba1;
+    --accent2: #8fb8d4;
+    --accent3: #a89ec9;
+    --glow: rgba(126, 203, 161, 0.12);
+    --glow2: rgba(143, 184, 212, 0.08);
+    --text: #c8d4ce;
+    --text-dim: rgba(184, 196, 190, 0.4);
+    --text-muted: rgba(184, 196, 190, 0.2);
+    --border: rgba(184, 196, 190, 0.08);
+    --border-hover: rgba(184, 196, 190, 0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, opacity 0.2s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(126, 203, 161, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.022;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 56px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: linear-gradient(to bottom, rgba(10,14,13,0.9) 0%, transparent 100%);
+  }
+
+  .nav-logo {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 15px;
+    letter-spacing: 6px;
+    color: var(--tile);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: 400;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0; right: 0;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: left;
+  }
+
+  .nav-links a:hover { color: var(--tile); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .nav-download {
+    border: 1px solid var(--border-hover) !important;
+    padding: 10px 24px;
+    border-radius: 40px;
+    color: var(--accent) !important;
+    transition: all 0.3s !important;
+  }
+  .nav-download:hover {
+    background: rgba(126, 203, 161, 0.08) !important;
+    border-color: rgba(126, 203, 161, 0.3) !important;
+  }
+  .nav-download::after { display: none !important; }
+
+  /* LANG SWITCHER */
+  .lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 4px;
+    margin-left: -10px;
+  }
+  .lang-btn {
+    background: none;
+    border: none;
+    cursor: none;
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    padding: 5px 12px;
+    border-radius: 20px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+  .lang-btn.active {
+    background: rgba(126, 203, 161, 0.1);
+    color: var(--accent);
+    border: 1px solid rgba(126, 203, 161, 0.2);
+  }
+  .lang-btn:hover:not(.active) { color: var(--tile); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 120px 40px 80px;
+    overflow: hidden;
+  }
+
+  /* Ambient gradient bg */
+  .hero-glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 40%, rgba(126,203,161,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 30% 60%, rgba(143,184,212,0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 70% 70%, rgba(168,158,201,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Enso Logo Canvas */
+  .enso-container {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    margin-bottom: 52px;
+  }
+
+  #enso-canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-title {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: clamp(52px, 8vw, 80px);
+    letter-spacing: 22px;
+    color: var(--tile);
+    text-align: center;
+    line-height: 1;
+    margin-bottom: 18px;
+  }
+
+  .hero-sub {
+    font-size: 11px;
+    letter-spacing: 7px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 64px;
+    font-weight: 400;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 44px;
+    border-radius: 50px;
+    background: rgba(126, 203, 161, 0.08);
+    border: 1px solid rgba(126, 203, 161, 0.2);
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 4px;
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(126,203,161,0.15), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .btn-primary:hover {
+    background: rgba(126, 203, 161, 0.12);
+    border-color: rgba(126, 203, 161, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 60px rgba(126, 203, 161, 0.12);
+  }
+  .btn-primary:hover::before { opacity: 1; }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 44px;
+    border-radius: 50px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 4px;
+    font-weight: 400;
+    text-transform: uppercase;
+    transition: all 0.4s ease;
+  }
+  .btn-ghost:hover {
+    border-color: var(--border-hover);
+    color: var(--tile);
+    transform: translateY(-2px);
+  }
+
+  /* Scroll indicator */
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.3;
+    animation: fadeInUp 2s ease 2s both;
+  }
+  .scroll-hint span {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 0.8; transform: scaleY(1.2); }
+  }
+
+  /* SECTION COMMON */
+  section {
+    padding: 120px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-tag {
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--tile);
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+
+  .section-desc {
+    font-size: 15px;
+    line-height: 1.85;
+    color: var(--text-dim);
+    max-width: 520px;
+    font-weight: 300;
+  }
+
+  /* DIVIDER */
+  .divider {
+    width: 1px;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--border-hover), transparent);
+    margin: 0 auto;
+  }
+
+  /* FEATURES GRID */
+  .features-section {
+    padding: 80px 40px 120px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .features-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-bottom: 80px;
+    align-items: end;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .feature-card {
+    background: var(--bg2);
+    padding: 48px 40px;
+    transition: background 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 1px;
+    background: linear-gradient(to right, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .feature-card:hover { background: rgba(15,21,18,0.8); }
+  .feature-card:hover::before { opacity: 0.6; }
+
+  .feature-number {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    font-weight: 400;
+  }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 24px;
+    opacity: 0.7;
+  }
+
+  .feature-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--tile);
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+
+  .feature-desc {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  /* ZEN MOMENT */
+  .zen-section {
+    padding: 100px 40px;
+    text-align: center;
+    position: relative;
+  }
+
+  .zen-orbit {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: 0 auto 64px;
+  }
+
+  #zen-canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  .zen-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 300;
+    color: var(--tile);
+    max-width: 600px;
+    margin: 0 auto 20px;
+    line-height: 1.5;
+  }
+
+  .zen-quote-attr {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  /* HOW IT WORKS */
+  .how-section {
+    padding: 100px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .steps-list {
+    margin-top: 64px;
+    display: grid;
+    gap: 0;
+  }
+
+  .step-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 40px;
+    padding: 48px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    transition: all 0.3s;
+  }
+  .step-item:first-child { border-top: 1px solid var(--border); }
+  .step-item:hover .step-num { color: var(--accent); }
+
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1;
+    transition: color 0.4s;
+  }
+
+  .step-content {}
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--tile);
+    margin-bottom: 10px;
+  }
+  .step-desc {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-dim);
+    font-weight: 300;
+    max-width: 540px;
+  }
+
+  /* MUSIC AMBIENT */
+  .music-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-top: 14px;
+  }
+
+  .music-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: musicPulse 2s ease infinite;
+  }
+  @keyframes musicPulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.4); }
+  }
+
+  /* DOWNLOAD */
+  .download-section {
+    padding: 120px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .download-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 50%, rgba(126,203,161,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .download-section .section-title { margin-bottom: 16px; }
+  .download-section .section-desc {
+    max-width: 440px;
+    margin: 0 auto 48px;
+    text-align: center;
+  }
+
+  .google-play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 52px;
+    background: transparent;
+    border: 1px solid rgba(126, 203, 161, 0.25);
+    border-radius: 60px;
+    color: var(--tile);
+    text-decoration: none;
+    transition: all 0.4s ease;
+    font-size: 13px;
+    letter-spacing: 3px;
+    font-weight: 400;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .google-play-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(126,203,161,0.08), rgba(143,184,212,0.04));
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .google-play-btn:hover {
+    border-color: rgba(126, 203, 161, 0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 30px 80px rgba(126, 203, 161, 0.1);
+    color: var(--accent);
+  }
+  .google-play-btn:hover::before { opacity: 1; }
+
+  .gp-icon {
+    width: 24px;
+    height: 24px;
+    opacity: 0.7;
+  }
+
+  .gp-label {}
+  .gp-label small {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+    text-transform: uppercase;
+  }
+  .gp-label span {
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .footer-logo {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 13px;
+    letter-spacing: 5px;
+    color: var(--text-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .footer-links a {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--tile); }
+
+  .footer-copy {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    nav { padding: 24px 28px; }
+    .nav-links { gap: 20px; }
+    .nav-links li:not(:last-child) { display: none; }
+    .features-header { grid-template-columns: 1fr; gap: 32px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .step-item { grid-template-columns: 50px 1fr; gap: 24px; }
+    footer { flex-direction: column; align-items: flex-start; gap: 24px; }
+    .footer-links { flex-wrap: wrap; gap: 20px; }
+  }
+  @media (max-width: 600px) {
+    section { padding: 80px 24px; }
+    .features-section { padding: 60px 24px 80px; }
+    .enso-container { width: 240px; height: 240px; }
+    .zen-orbit { width: 280px; height: 280px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">MINDY</a>
+  <ul class="nav-links">
+    <li><a href="#features" data-en="Features" data-tr="Özellikler">Features</a></li>
+    <li><a href="#how" data-en="Flow" data-tr="Akış">Flow</a></li>
+    <li><a href="#zen" data-en="Philosophy" data-tr="Felsefe">Philosophy</a></li>
+    <li><a href="https://applendit.github.io/mindyloops/privacy-policy.html" data-en="Privacy" data-tr="Gizlilik">Privacy</a></li>
+    <li><a href="#download" class="nav-download" data-en="Download" data-tr="İndir">Download</a></li>
+  </ul>
+  <div class="lang-switcher">
+    <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" id="btn-tr" onclick="setLang('tr')">TR</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="max-width:none; padding:0;">
+  <div class="hero-glow"></div>
+
+  <div class="enso-container">
+    <canvas id="enso-canvas"></canvas>
+  </div>
+
+  <h1 class="hero-title">MINDY</h1>
+  <p class="hero-sub" data-en="Loop Puzzle · Find Your Flow" data-tr="Döngü Bulmacası · Akışını Bul">Loop Puzzle · Find Your Flow</p>
+
+  <div class="hero-cta">
+    <a href="#download" class="btn-primary">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      <span data-en="Download Free" data-tr="Ücretsiz İndir">Download Free</span>
+    </a>
+    <a href="#features" class="btn-ghost" data-en="Discover More" data-tr="Keşfet">Discover More</a>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span data-en="Scroll" data-tr="Kaydır">Scroll</span>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section style="text-align:center; padding:120px 40px 60px;">
+  <p class="section-tag reveal" data-en="A Different Kind of Puzzle" data-tr="Farklı Bir Bulmaca Deneyimi">A Different Kind of Puzzle</p>
+  <h2 class="section-title reveal reveal-delay-1" style="text-align:center; max-width:700px; margin:0 auto 24px;"
+      data-en="Silence the noise.<br>Connect the loops."
+      data-tr="Gürültüyü sus.<br>Döngüleri bağla.">
+    Silence the noise.<br>Connect the loops.
+  </h2>
+  <p class="section-desc reveal reveal-delay-2" style="margin:0 auto; text-align:center;"
+     data-en="Mindy Loops is a meditative puzzle experience designed to slow you down. No timers. No pressure. Just the gentle satisfaction of finding flow — one loop at a time."
+     data-tr="Mindy Loops, seni yavaşlatmak için tasarlanmış meditatif bir bulmaca deneyimidir. Süre yok. Baskı yok. Sadece akışı bulmanın yumuşak tatmini — bir döngü, bir nefes.">
+    Mindy Loops is a meditative puzzle experience designed to slow you down. No timers. No pressure. Just the gentle satisfaction of finding flow — one loop at a time.
+  </p>
+  <div class="music-badge reveal reveal-delay-3">
+    <div class="music-dot"></div>
+    <span data-en="Ambient music plays as you solve" data-tr="Çözerken ortam müziği eşlik eder">Ambient music plays as you solve</span>
+  </div>
+</section>
+
+<div class="divider" style="margin:40px auto;"></div>
+
+<!-- FEATURES -->
+<div class="features-section" id="features">
+  <div class="features-header">
+    <div>
+      <p class="section-tag reveal" data-en="Crafted with Intention" data-tr="Özenle Tasarlandı">Crafted with Intention</p>
+      <h2 class="section-title reveal reveal-delay-1"
+          data-en="Every detail<br>serves your calm."
+          data-tr="Her detay<br>huzuruna hizmet eder.">Every detail<br>serves your calm.</h2>
+    </div>
+    <p class="section-desc reveal reveal-delay-2" style="align-self:end;"
+       data-en="Each element of Mindy Loops was designed with a single purpose — to create a pocket of stillness in your day."
+       data-tr="Mindy Loops'un her unsuru tek bir amaçla tasarlandı — günün içinde bir sessizlik adası yaratmak.">
+      Each element of Mindy Loops was designed with a single purpose — to create a pocket of stillness in your day.
+    </p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <p class="feature-number">01</p>
+      <svg class="feature-icon" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="14" stroke="var(--accent)" stroke-width="0.8" opacity="0.4"/>
+        <path d="M20 6 Q28 12 28 20 Q28 28 20 34 Q12 28 12 20 Q12 12 20 6Z" stroke="var(--accent)" stroke-width="1" fill="none"/>
+        <circle cx="20" cy="20" r="4" stroke="var(--accent2)" stroke-width="0.8" fill="none"/>
+      </svg>
+      <h3 class="feature-title" data-en="Procedural Zen Palettes" data-tr="Prosedürel Zen Paletleri">Procedural Zen Palettes</h3>
+      <p class="feature-desc" data-en="Each level generates a unique calming color world — sage greens, deep teals, soft lavenders. Never the same, always soothing." data-tr="Her seviye benzersiz bir sakinleştirici renk dünyası oluşturur — adaçayı yeşilleri, derin tiller, yumuşak lavantalar. Hiç tekrar etmez, hep dinlendirici.">Each level generates a unique calming color world — sage greens, deep teals, soft lavenders. Never the same, always soothing.</p>
+    </div>
+
+    <div class="feature-card reveal reveal-delay-1">
+      <p class="feature-number">02</p>
+      <svg class="feature-icon" viewBox="0 0 40 40" fill="none">
+        <path d="M8 20 Q14 8 20 20 Q26 32 32 20" stroke="var(--accent2)" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <circle cx="20" cy="20" r="2" fill="var(--accent2)" opacity="0.6"/>
+        <path d="M14 14 L20 20 L26 14" stroke="var(--accent3)" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+      </svg>
+      <h3 class="feature-title" data-en="Ambient Soundscapes" data-tr="Ortam Sesleri">Ambient Soundscapes</h3>
+      <p class="feature-desc" data-en="Soft background music accompanies your session. Let the sound wash over you as you solve — or play in silence. Your choice." data-tr="Bulmacaları çözerken yumuşak arka plan müziği eşlik eder. Sesi hisset ya da sessizlikte oyna — seçim senindir.">Soft background music accompanies your session. Let the sound wash over you as you solve — or play in silence. Your choice.</p>
+    </div>
+
+    <div class="feature-card reveal reveal-delay-2">
+      <p class="feature-number">03</p>
+      <svg class="feature-icon" viewBox="0 0 40 40" fill="none">
+        <rect x="10" y="10" width="8" height="8" rx="2" stroke="var(--accent)" stroke-width="0.8" fill="none"/>
+        <rect x="22" y="10" width="8" height="8" rx="2" stroke="var(--accent)" stroke-width="0.8" fill="none"/>
+        <rect x="10" y="22" width="8" height="8" rx="2" stroke="var(--accent)" stroke-width="0.8" fill="none"/>
+        <rect x="22" y="22" width="8" height="8" rx="2" stroke="var(--accent2)" stroke-width="0.8" fill="none"/>
+        <path d="M18 14 L22 14 M18 26 L22 26 M14 18 L14 22 M26 18 L26 22" stroke="var(--accent)" stroke-width="0.8"/>
+      </svg>
+      <h3 class="feature-title" data-en="Elegant Grid Puzzles" data-tr="Zarif Izgara Bulmacaları">Elegant Grid Puzzles</h3>
+      <p class="feature-desc" data-en="Connect tiles to complete seamless loops. Simple to learn, endlessly satisfying. The puzzle breathes with you as you solve." data-tr="Kusursuz döngüler oluşturmak için kareleri birleştir. Öğrenmesi kolay, tatmini sonsuz. Bulmaca seninle nefes alır.">Connect tiles to complete seamless loops. Simple to learn, endlessly satisfying. The puzzle breathes with you as you solve.</p>
+    </div>
+
+    <div class="feature-card reveal">
+      <p class="feature-number">04</p>
+      <svg class="feature-icon" viewBox="0 0 40 40" fill="none">
+        <path d="M20 10 C10 10 10 30 20 30 C30 30 30 10 20 10Z" stroke="var(--accent3)" stroke-width="1" fill="none"/>
+        <path d="M15 20 Q20 15 25 20 Q20 25 15 20" stroke="var(--accent)" stroke-width="0.8" fill="none"/>
+      </svg>
+      <h3 class="feature-title" data-en="No Clock, No Pressure" data-tr="Saat Yok, Baskı Yok">No Clock, No Pressure</h3>
+      <p class="feature-desc" data-en="Time is irrelevant in Mindy. Solve at the pace of your breath. Return exactly where you left off, always." data-tr="Mindy'de zaman önemsizdir. Nefesin hızında çöz. Her zaman kaldığın yerden devam et.">Time is irrelevant in Mindy. Solve at the pace of your breath. Return exactly where you left off, always.</p>
+    </div>
+
+    <div class="feature-card reveal reveal-delay-1">
+      <p class="feature-number">05</p>
+      <svg class="feature-icon" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="10" stroke="var(--accent2)" stroke-width="0.8" fill="none" opacity="0.5"/>
+        <circle cx="20" cy="20" r="6" stroke="var(--accent2)" stroke-width="0.8" fill="none" opacity="0.7"/>
+        <circle cx="20" cy="20" r="2" fill="var(--accent2)" opacity="0.8"/>
+        <path d="M20 10 L20 8 M30 20 L32 20 M20 30 L20 32 M10 20 L8 20" stroke="var(--accent2)" stroke-width="0.8" stroke-linecap="round"/>
+      </svg>
+      <h3 class="feature-title" data-en="Haptic Feedback" data-tr="Dokunsal Geri Bildirim">Haptic Feedback</h3>
+      <p class="feature-desc" data-en="Feel a gentle pulse with each correct connection. The phone becomes an extension of your calm — tactile and intentional." data-tr="Her doğru bağlantıda nazik bir titreşim hissedersin. Telefon sakinliğinin bir uzantısına dönüşür — dokunsal ve bilinçli.">Feel a gentle pulse with each correct connection. The phone becomes an extension of your calm — tactile and intentional.</p>
+    </div>
+
+    <div class="feature-card reveal reveal-delay-2">
+      <p class="feature-number">06</p>
+      <svg class="feature-icon" viewBox="0 0 40 40" fill="none">
+        <path d="M12 28 Q16 20 20 24 Q24 28 28 16" stroke="var(--accent)" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <circle cx="12" cy="28" r="2" fill="var(--accent)" opacity="0.6"/>
+        <circle cx="28" cy="16" r="2" fill="var(--accent3)" opacity="0.6"/>
+      </svg>
+      <h3 class="feature-title" data-en="Progressive Depth" data-tr="Derinleşen Zorluk">Progressive Depth</h3>
+      <p class="feature-desc" data-en="Handcrafted and procedurally generated levels grow in complexity as you do. Always challenging, never frustrating." data-tr="El yapımı ve prosedürel olarak üretilen seviyeler seninle birlikte karmaşıklaşır. Her zaman meydan okuyucu, hiç sinir bozucu değil.">Handcrafted and procedurally generated levels grow in complexity as you do. Always challenging, never frustrating.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ZEN PHILOSOPHY -->
+<section class="zen-section" id="zen">
+  <div class="zen-orbit">
+    <canvas id="zen-canvas"></canvas>
+  </div>
+  <p class="section-tag reveal" data-en="The Mindy Philosophy" data-tr="Mindy Felsefesi">The Mindy Philosophy</p>
+  <blockquote class="zen-quote reveal reveal-delay-1"
+    data-en="&ldquo;The loop has no beginning<br>and no end — only flow.&rdquo;"
+    data-tr="&ldquo;Döngünün ne başı var<br>ne sonu — sadece akış.&rdquo;">
+    "The loop has no beginning<br>and no end — only flow."
+  </blockquote>
+  <p class="zen-quote-attr reveal reveal-delay-2" data-en="— The Spirit of Mindy" data-tr="— Mindy'nin Ruhu">— The Spirit of Mindy</p>
+</section>
+
+<div class="divider" style="margin:0 auto;"></div>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <p class="section-tag reveal" data-en="Your Journey" data-tr="Yolculuğun">Your Journey</p>
+  <h2 class="section-title reveal reveal-delay-1"
+      data-en="Three breaths.<br>One loop."
+      data-tr="Üç nefes.<br>Bir döngü.">Three breaths.<br>One loop.</h2>
+
+  <div class="steps-list">
+    <div class="step-item reveal">
+      <span class="step-num">I</span>
+      <div class="step-content">
+        <h3 class="step-title" data-en="Open &amp; Breathe" data-tr="Aç &amp; Nefes Al">Open &amp; Breathe</h3>
+        <p class="step-desc" data-en="Launch Mindy and let the ambient soundtrack wash in. The procedural palette sets the mood — today might be deep sage, tomorrow soft lavender." data-tr="Mindy'yi aç ve ortam müziğinin seni sarmasına izin ver. Prosedürel palet ruh halini belirler — bugün derin adaçayı, yarın belki yumuşak lavanta.">Launch Mindy and let the ambient soundtrack wash in. The procedural palette sets the mood — today might be deep sage, tomorrow soft lavender.</p>
+      </div>
+    </div>
+
+    <div class="step-item reveal">
+      <span class="step-num">II</span>
+      <div class="step-content">
+        <h3 class="step-title" data-en="Observe the Grid" data-tr="Izgarayı İzle">Observe the Grid</h3>
+        <p class="step-desc" data-en="Study the tiles with curiosity, not urgency. The path reveals itself when you stop forcing it. There is always one perfect solution." data-tr="Kareleri aceleyle değil, merakla incele. Yolu zorladığında değil, bıraktığında kendini gösterir. Her zaman bir mükemmel çözüm vardır.">Study the tiles with curiosity, not urgency. The path reveals itself when you stop forcing it. There is always one perfect solution.</p>
+      </div>
+    </div>
+
+    <div class="step-item reveal">
+      <span class="step-num">III</span>
+      <div class="step-content">
+        <h3 class="step-title" data-en="Complete the Loop" data-tr="Döngüyü Tamamla">Complete the Loop</h3>
+        <p class="step-desc" data-en="When the last connection clicks into place, the board glows and sighs. A moment of pure satisfaction. Then begins again — deeper, calmer." data-tr="Son bağlantı yerine oturduğunda tahta parlar ve iç çeker. Saf bir tatmin anı. Sonra yeniden başlar — daha derin, daha sakin.">When the last connection clicks into place, the board glows and sighs. A moment of pure satisfaction. Then begins again — deeper, calmer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section class="download-section" id="download" style="max-width:none;">
+  <div class="download-bg"></div>
+  <p class="section-tag reveal" data-en="Begin Your Practice" data-tr="Pratiğine Başla">Begin Your Practice</p>
+  <h2 class="section-title reveal reveal-delay-1"
+      data-en="Find your loop.<br>Free, forever."
+      data-tr="Döngünü bul.<br>Ücretsiz, sonsuza dek.">Find your loop.<br>Free, forever.</h2>
+  <p class="section-desc reveal reveal-delay-2"
+     data-en="Available on Android. No subscriptions, no paywalls. Just pure, meditative puzzle play."
+     data-tr="Android'de mevcut. Abonelik yok, ödeme duvarı yok. Sadece saf, meditatif bulmaca oyunu.">Available on Android. No subscriptions, no paywalls. Just pure, meditative puzzle play.</p>
+
+  <a href="https://play.google.com/store/apps/details?id=com.applendit.mindy" class="google-play-btn reveal reveal-delay-3">
+    <svg class="gp-icon" viewBox="0 0 24 24" fill="currentColor" opacity="0.6">
+      <path d="M3 3.5L13.5 12L3 20.5V3.5ZM13.5 12L20.5 8L16.5 12L20.5 16L13.5 12Z" fill="var(--accent)"/>
+    </svg>
+    <div class="gp-label">
+      <small data-en="Get it on" data-tr="Şuradan indir">Get it on</small>
+      <span>Google Play</span>
+    </div>
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">MINDY LOOPS · 2025</span>
+  <ul class="footer-links">
+    <li><a href="#features" data-en="Features" data-tr="Özellikler">Features</a></li>
+    <li><a href="#how" data-en="How to Play" data-tr="Nasıl Oynanır">How to Play</a></li>
+    <li><a href="https://applendit.github.io/mindyloops/privacy-policy.html" data-en="Privacy Policy" data-tr="Gizlilik Politikası">Privacy Policy</a></li>
+    <li><a href="mailto:contact@applendit.com" data-en="Contact" data-tr="İletişim">Contact</a></li>
+  </ul>
+  <span class="footer-copy" data-en="© 2025 Applendit. All rights reserved." data-tr="© 2025 Applendit. Tüm hakları saklıdır.">© 2025 Applendit. All rights reserved.</span>
+</footer>
+
+<script>
+/* CUSTOM CURSOR */
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animCursor() {
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => { ring.style.transform = 'translate(-50%,-50%) scale(1.6)'; ring.style.borderColor = 'rgba(126,203,161,0.5)'; });
+  el.addEventListener('mouseleave', () => { ring.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.borderColor = 'rgba(126,203,161,0.3)'; });
+});
+
+/* ============================================
+   HERO ENSO — HYPNOTIC MULTI-LAYER ZEN LOGO
+   ============================================ */
+(function() {
+  const canvas = document.getElementById('enso-canvas');
+  const dpr = window.devicePixelRatio || 1;
+  const SIZE = 320;
+  canvas.width = SIZE * dpr;
+  canvas.height = SIZE * dpr;
+  canvas.style.width = SIZE + 'px';
+  canvas.style.height = SIZE + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const cx = SIZE / 2, cy = SIZE / 2;
+  let t = 0;
+
+  // Zen color palette from the app
+  const tileColor   = 'rgba(184,196,190,';  // --tile
+  const accentColor = 'rgba(126,203,161,';  // --accent
+  const accent2     = 'rgba(143,184,212,';  // --accent2
+  const accent3     = 'rgba(168,158,201,';  // --accent3
+
+  function drawOrganicLoop(ctx, cx, cy, radius, phase, segments = 120) {
+    ctx.beginPath();
+    for (let i = 0; i <= segments; i++) {
+      const angle = (i / segments) * Math.PI * 2;
+      const wobble =
+        Math.sin(angle * 3 + t * 0.8 + phase) * 5.5 +
+        Math.cos(angle * 5 - t * 0.6 + phase) * 2.8 +
+        Math.sin(angle * 7 + t * 0.4) * 1.2;
+      const r = radius + wobble;
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+  }
+
+  function drawPetalRing(ctx, cx, cy, radius, petals, phase) {
+    for (let p = 0; p < petals; p++) {
+      const baseAngle = (p / petals) * Math.PI * 2 + t * 0.15 + phase;
+      const px = cx + radius * Math.cos(baseAngle);
+      const py = cy + radius * Math.sin(baseAngle);
+      const breathe = 1 + 0.08 * Math.sin(t * 1.2 + p * 0.8);
+      ctx.beginPath();
+      ctx.arc(px, py, 3.5 * breathe, 0, Math.PI * 2);
+      ctx.fillStyle = accentColor + (0.15 + 0.1 * Math.sin(t + p)) + ')';
+      ctx.fill();
+    }
+  }
+
+  function frame() {
+    ctx.clearRect(0, 0, SIZE, SIZE);
+    t += 0.008;
+
+    // ── Layer 0: Outermost breath ring (ultra subtle)
+    ctx.save();
+    const outerPulse = 0.03 + 0.015 * Math.sin(t * 0.7);
+    ctx.strokeStyle = tileColor + outerPulse + ')';
+    ctx.lineWidth = 28;
+    ctx.shadowColor = accentColor + '0.06)';
+    ctx.shadowBlur = 20;
+    drawOrganicLoop(ctx, cx, cy, 136, 0);
+    ctx.stroke();
+    ctx.restore();
+
+    // ── Layer 1: Outer mist glow ring
+    ctx.save();
+    ctx.strokeStyle = tileColor + '0.06)';
+    ctx.lineWidth = 16;
+    ctx.shadowColor = accentColor + '0.1)';
+    ctx.shadowBlur = 14;
+    drawOrganicLoop(ctx, cx, cy, 118, 0.3);
+    ctx.stroke();
+    ctx.restore();
+
+    // ── Layer 2: Secondary organic ring (accent2, slower phase)
+    ctx.save();
+    ctx.strokeStyle = accent2 + '0.12)';
+    ctx.lineWidth = 1.2;
+    ctx.shadowColor = accent2 + '0.2)';
+    ctx.shadowBlur = 8;
+    drawOrganicLoop(ctx, cx, cy, 108, -0.8, 100);
+    ctx.stroke();
+    ctx.restore();
+
+    // ── Layer 3: Main ink stroke
+    ctx.save();
+    ctx.strokeStyle = tileColor + '0.38)';
+    ctx.lineWidth = 3.5;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.shadowColor = accentColor + '0.15)';
+    ctx.shadowBlur = 6;
+    drawOrganicLoop(ctx, cx, cy, 100, 0.5);
+    ctx.stroke();
+    ctx.restore();
+
+    // ── Layer 4: Inner accent enso (opposite wobble)
+    ctx.save();
+    ctx.strokeStyle = accentColor + '0.55)';
+    ctx.lineWidth = 1.8;
+    ctx.shadowColor = accentColor + '0.4)';
+    ctx.shadowBlur = 10;
+    drawOrganicLoop(ctx, cx, cy, 98, 1.0, 140);
+    ctx.stroke();
+    ctx.restore();
+
+    // ── Layer 5: Tertiary micro-ring (accent3)
+    ctx.save();
+    ctx.strokeStyle = accent3 + '0.18)';
+    ctx.lineWidth = 0.8;
+    drawOrganicLoop(ctx, cx, cy, 105, -0.5, 80);
+    ctx.stroke();
+    ctx.restore();
+
+    // ── Layer 6: Inner ghost ring
+    ctx.save();
+    ctx.strokeStyle = tileColor + '0.1)';
+    ctx.lineWidth = 1;
+    drawOrganicLoop(ctx, cx, cy, 82, 1.5, 90);
+    ctx.stroke();
+    ctx.restore();
+
+    // ── Layer 7: Core breathing dot
+    ctx.save();
+    const coreSize = 3.5 + 1.5 * Math.sin(t * 1.5);
+    ctx.beginPath();
+    ctx.arc(cx, cy, coreSize, 0, Math.PI * 2);
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, coreSize * 3);
+    grad.addColorStop(0, accentColor + '0.9)');
+    grad.addColorStop(1, accentColor + '0)');
+    ctx.fillStyle = grad;
+    ctx.shadowColor = accentColor + '0.6)';
+    ctx.shadowBlur = 20;
+    ctx.fill();
+    ctx.restore();
+
+    // ── Layer 8: Petal orbit dots
+    drawPetalRing(ctx, cx, cy, 68 + 3 * Math.sin(t * 0.5), 8, 0);
+
+    // ── Layer 9: Outer orbit dots (smaller, accent2)
+    ctx.save();
+    for (let p = 0; p < 12; p++) {
+      const angle = (p / 12) * Math.PI * 2 + t * 0.08;
+      const px2 = cx + 128 * Math.cos(angle);
+      const py2 = cy + 128 * Math.sin(angle);
+      const alpha = 0.06 + 0.04 * Math.sin(t * 1.5 + p);
+      ctx.beginPath();
+      ctx.arc(px2, py2, 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = accent2 + alpha + ')';
+      ctx.fill();
+    }
+    ctx.restore();
+
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* =============================================
+   ZEN SECTION CANVAS — LARGE MEDITATIVE ORBIT
+   ============================================= */
+(function() {
+  const canvas = document.getElementById('zen-canvas');
+  const dpr = window.devicePixelRatio || 1;
+  const SIZE = 400;
+  canvas.width = SIZE * dpr;
+  canvas.height = SIZE * dpr;
+  canvas.style.width = SIZE + 'px';
+  canvas.style.height = SIZE + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const cx = SIZE / 2, cy = SIZE / 2;
+  let t = 0;
+
+  const tileColor   = 'rgba(184,196,190,';
+  const accentColor = 'rgba(126,203,161,';
+  const accent2     = 'rgba(143,184,212,';
+  const accent3     = 'rgba(168,158,201,';
+
+  function drawLoop(radius, phase, segments = 120) {
+    ctx.beginPath();
+    for (let i = 0; i <= segments; i++) {
+      const angle = (i / segments) * Math.PI * 2;
+      const w = Math.sin(angle * 3 + t * 0.6 + phase) * 7 + Math.cos(angle * 5 - t * 0.4) * 3;
+      const r = radius + w;
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+  }
+
+  function zenFrame() {
+    ctx.clearRect(0, 0, SIZE, SIZE);
+    t += 0.005;
+
+    // Outermost halo
+    ctx.save();
+    ctx.strokeStyle = tileColor + '0.04)';
+    ctx.lineWidth = 40;
+    drawLoop(170, 0);
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    ctx.strokeStyle = tileColor + '0.04)';
+    ctx.lineWidth = 20;
+    drawLoop(160, 0.2);
+    ctx.stroke();
+    ctx.restore();
+
+    // accent2 outer ring
+    ctx.save();
+    ctx.strokeStyle = accent2 + '0.1)';
+    ctx.lineWidth = 1;
+    drawLoop(148, -0.6, 90);
+    ctx.stroke();
+    ctx.restore();
+
+    // Main ring
+    ctx.save();
+    ctx.strokeStyle = tileColor + '0.28)';
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.shadowColor = accentColor + '0.15)';
+    ctx.shadowBlur = 8;
+    drawLoop(136, 0.4);
+    ctx.stroke();
+    ctx.restore();
+
+    // Accent enso
+    ctx.save();
+    ctx.strokeStyle = accentColor + '0.45)';
+    ctx.lineWidth = 1.5;
+    ctx.shadowColor = accentColor + '0.3)';
+    ctx.shadowBlur = 14;
+    drawLoop(133, 1.0, 150);
+    ctx.stroke();
+    ctx.restore();
+
+    // accent3 inner
+    ctx.save();
+    ctx.strokeStyle = accent3 + '0.12)';
+    ctx.lineWidth = 0.7;
+    drawLoop(118, -0.4, 80);
+    ctx.stroke();
+    ctx.restore();
+
+    // Inner ghost
+    ctx.save();
+    ctx.strokeStyle = tileColor + '0.07)';
+    ctx.lineWidth = 0.8;
+    drawLoop(105, 1.8, 80);
+    ctx.stroke();
+    ctx.restore();
+
+    // Outer dots
+    for (let p = 0; p < 16; p++) {
+      const angle = (p / 16) * Math.PI * 2 + t * 0.06;
+      const px = cx + 170 * Math.cos(angle);
+      const py = cy + 170 * Math.sin(angle);
+      const alpha = 0.04 + 0.03 * Math.sin(t * 1.2 + p);
+      ctx.beginPath();
+      ctx.arc(px, py, 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = tileColor + alpha + ')';
+      ctx.fill();
+    }
+
+    // Inner petal dots
+    for (let p = 0; p < 8; p++) {
+      const angle = (p / 8) * Math.PI * 2 - t * 0.1;
+      const px = cx + 72 * Math.cos(angle);
+      const py = cy + 72 * Math.sin(angle);
+      ctx.beginPath();
+      ctx.arc(px, py, 2.5 + Math.sin(t + p) * 1, 0, Math.PI * 2);
+      ctx.fillStyle = accentColor + (0.12 + 0.08 * Math.sin(t + p)) + ')';
+      ctx.fill();
+    }
+
+    // Core glow
+    const pulse = 4 + 2 * Math.sin(t * 1.2);
+    ctx.beginPath();
+    ctx.arc(cx, cy, pulse, 0, Math.PI * 2);
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, pulse * 4);
+    g.addColorStop(0, accentColor + '0.85)');
+    g.addColorStop(1, accentColor + '0)');
+    ctx.fillStyle = g;
+    ctx.shadowColor = accentColor + '0.6)';
+    ctx.shadowBlur = 24;
+    ctx.fill();
+
+    requestAnimationFrame(zenFrame);
+  }
+  zenFrame();
+})();
+
+/* SCROLL REVEAL */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* LANGUAGE SWITCHER */
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-tr').classList.toggle('active', lang === 'tr');
+  document.documentElement.lang = lang;
+
+  // Update page title
+  document.title = lang === 'tr'
+    ? 'Mindy Loops — Nefes Al. Bağlan. Akış.'
+    : 'Mindy Loops — Breathe. Connect. Flow.';
+
+  // Update all elements with data-en / data-tr
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const text = lang === 'tr' ? el.getAttribute('data-tr') : el.getAttribute('data-en');
+    if (!text) return;
+    // Use innerHTML for elements that may contain <br> tags
+    if (text.includes('<') || text.includes('&')) {
+      el.innerHTML = text;
+    } else {
+      el.textContent = text;
+    }
+  });
+}
+</script>
+</body>
+</html>
